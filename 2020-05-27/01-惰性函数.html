@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8" />
+    <title>01-惰性函数</title>
+    <style></style>
+  </head>
+  <body>
+    <script>
+      // 天气信息管理（查询、设置地区……）
+      // 新闻信息管理（查询、设置频道、设置地区、分享）
+      let weatherModule = (function () {
+        let _default = "beijing";
+        let queryWeather = function () {
+          // ……
+        };
+
+        let setCity = function () {
+          // ……
+        };
+        // 不止返回一个东西，所以用对象这种数据结构了
+        return {
+          // ES6 setCity:setCity
+          setCity,
+        };
+      })();
+
+      let BModule = (function () {
+        // 热点新闻
+        let _default = "hot";
+        let queryNews = function () {
+          // ……
+          weatherModule.setCity();
+        };
+        // 没有暴露也要返回一个空对象 -> 之后，需要暴露的时候，往里边添加即可！
+        return {};
+      })();
+    </script>
+  </body>
+</html>
