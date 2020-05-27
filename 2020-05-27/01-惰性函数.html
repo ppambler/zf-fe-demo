@@ -35,6 +35,43 @@
         // 没有暴露也要返回一个空对象 -> 之后，需要暴露的时候，往里边添加即可！
         return {};
       })();
+
+      // DOM2事件绑定 -> 相较于DOM1，多了一个新的API，但存在兼容性问题
+      // 元素.addEventListener
+      // 元素.attachEvent
+
+      // function emit(ele, type, func) {
+      //   if (ele.addEventListener) {
+      //     // false -> 默认值 -> 冒泡
+      //     ele.addEventListener(type, func, false);
+      //   } else if (ele.attachEvent) {
+      //     ele.attachEvent("on" + type, func);
+      //   } else {
+      //     ele["on" + type] = func;
+      //   }
+      // }
+      // emit(box, "click", fn1);
+      // emit(box, "click", fn2);
+
+      // 惰性思想
+      function emit(ele, type, func) {
+        if (ele.addEventListener) {
+          emit = function (ele, type, func) {
+            ele.addEventListener(type, func, false);
+          };
+        } else if (ele.attachEvent) {
+          emit = function (ele, type, func) {
+            ele.attachEvent("on" + type, func);
+          };
+        } else {
+          emit = function (ele, type, func) {
+            ele["on" + type] = func;
+          };
+        }
+        emit(ele, type, func);
+      }
+      emit(box, "click", fn1);
+      emit(box, "click", fn2);
     </script>
   </body>
 </html>
