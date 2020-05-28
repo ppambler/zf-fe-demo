@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8" />
+    <title>01-柯里化函数</title>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        text-align: center;
+        line-height: 100px;
+        background-color: coral;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box" id="box">boxA</div>
+    <script>
+      // let obj = {
+      //   x: 100,
+      // };
+      // // y是事件对象哈！
+      // function fn(y) {
+      //   console.log(y);
+      //   this.x += y;
+      //   console.log(this);
+      // }
+
+      // box.onclick = fn;
+      // box.onclick = fn.bind(obj, 200);
+      // box.onclick = fn.call(obj, 200);
+      // box.onclick = fn.apply(obj, [200]);
+
+      // box.onclick = function () {
+      //   fn.call(obj, 200);
+      // };
+
+      // setTimeout(fn.call(obj, 200), 1000);
+      // setTimeout(undefined, 1000);
+      // setTimeout(function () {
+      //   fn.call(obj, 200);
+      // }, 1000);
+      /**
+       * @description: 预先处理内容
+       *  @param
+       *   {Function} func 要执行的函数
+       *   {Object} context 需要改变的this指向
+       *   {Array} args 给函数传递的参数
+       *  @return:
+       *   返回一个代理函数（匿名函数也行，只是想给有意义的名字罢了）
+       */
+      // function bind(func, context, ...args) {
+      //   return function proxy() {
+      //     func.call(context, ...args);
+      //   };
+      // }
+      // setTimeout(bind(fn, obj, 200, 300), 1000);
+
+      let obj = {
+        x: 100,
+      };
+
+      function fn(y, ev) {
+        console.log(y);
+        console.log(ev);
+        this.x += y;
+        console.log(this);
+      }
+
+      // 绑在函数原型上
+      // !(function (proto) {
+      //   function bind(context = window, ...outerArgs) {
+      //     let _this = this;
+      //     return function (...innerArgs) {
+      //       let args = outerArgs.concat(innerArgs);
+      //       _this.call(context, ...args);
+      //     };
+      //   }
+      //   proto.bind = bind;
+      // })(Function.prototype);
+      box.onclick = fn.bind(obj, 200);
+
+      // 兼容所有浏览器的写法
+      !(function (proto) {
+        function bind(context) {
+          context = context || window;
+          var _this = this;
+          var outerArgs = Array.prototype.slice.call(arguments, 1);
+          return function proxy() {
+            var innerArgs = [].slice.call(arguments, 0);
+            var args = outerArgs.concat(innerArgs);
+            _this.apply(context, args);
+          };
+        }
+        proto.bind = bind;
+      })(Function.prototype);
+    </script>
+  </body>
+</html>
