@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8" />
+    <title>01-object</title>
+    <style></style>
+  </head>
+  <body>
+    <div id="box1" class="box"></div>
+    <script>
+      function fn() {
+        let x = 100;
+        this.num = x + 100;
+      }
+      fn();
+      let f = new fn();
+      function Dog(name) {
+        this.name = name;
+      }
+      Dog.prototype.bark = function () {
+        console.log("wangwang");
+      };
+      Dog.prototype.sayName = function () {
+        console.log("my name is " + this.name);
+      };
+
+      // let sanmao = new Dog("三毛");
+      // sanmao.sayName();
+      // sanmao.bark();
+
+      /*
+       * 内置NEW的实现原理
+       * @params
+       *    Func：操作的那个类
+       *    ARGS：NEW类的时候传递的实参集合
+       * @return
+       *    实例或者自己返回的对象
+       */
+      function _new(Func, ...args) {
+        //默认创建一个实例对象（而且是属于当前这个类的一个实例）
+        // let obj = {};
+        // obj.__proto__ = Func.prototype; //=>IE大部分浏览器中不允许我们直接操作__proto__
+        let obj = Object.create(Func.prototype);
+
+        //也会把类当做普通函数执行
+        //执行的时候要保证函数中的this指向创建的实例
+        let result = Func.call(obj, ...args);
+
+        //若客户自己返回引用值，则以自己返回的为主，否则返回创建的实例
+        console.log(result);
+        if (
+          (result !== null && typeof result === "object") ||
+          typeof result === "function"
+        ) {
+          return result;
+        }
+        return obj;
+      }
+      let sanmao = _new(Dog, "三毛");
+      sanmao.bark(); //=>"wangwang"
+      sanmao.sayName(); //=>"my name is 三毛"
+      console.log(sanmao instanceof Dog); //=>true
+    </script>
+  </body>
+</html>
