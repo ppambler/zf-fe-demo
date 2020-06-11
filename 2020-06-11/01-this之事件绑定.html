@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="btn">click me</button>
+
+    <script>
+      // btn.onclick = function xxx() {
+      //   console.log(this); //<button id="btn">click me</button>
+      // };
+
+      // function xxx() {
+      //   console.log(this);
+      // }
+
+      // btn.onclick = function () {
+      //   xxx();
+      // };
+
+      // btn.addEventListener(
+      //   "click",
+      //   function xxx() {
+      //     console.log(this); // -> btn这个dom元素
+      //   },
+      //   false
+      // );
+
+      // btn.attachEvent("onclick", function xxx() {
+      //   // <= IE8浏览器中的DOM2事件绑定
+      //   console.log(this); // -> window
+      // });
+
+      function xxx() {
+        console.log(this);
+      }
+
+      btn.onclick = xxx.bind(window);
+    </script>
+  </body>
+</html>
