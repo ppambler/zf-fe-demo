@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bind重写</title>
+    <style>
+      #test {
+        height: 100px;
+        width: 100px;
+        background-color: pink;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="test">
+      占个位
+    </div>
+    <script>
+      // ~(function anonymous(proto) {
+      //   function bind(context) {
+      //     // context may be null or undefined
+      //     // 为啥不这样写 context = context || window？ -> 如果传的是''和0等这样的falsy值呢？
+      //     if (context == undefined) {
+      //       context = window;
+      //     }
+      //     // 获取传递的实参集合
+      //     // 这算是一个小技巧吧，可谓方法借用……当然这可不是随意借用的，你这arguments可符合某种数据结构才行，如可遍历的……
+      //     var args = [].slice.call(arguments, 1);
+      //     // 需要最终执行的函数 -> 那个callback
+      //     var _this = this;
+      //     return function anonymous() {
+      //       // 为啥要有这行代码呢？ -> 因为返回的这个函数有可能被传入参数，如事件对象：
+      //       // document.body.onclick = obj.fn.bind(window, 10, 20)
+      //       // document.body.onclick = anonymous -> 浏览器会传个事件对象给这个anonymous，所以你得找个容器接收一下
+      //       var amArg = [].slice.call(arguments, 0);
+
+      //       // 为啥要用apply？ -> 因为args是个数组哈！一般都会把像ev这样的内置参数扔到数组的最后，真正的bind源码也是这样写的……
+      //       _this.apply(context, args.concat(amArg));
+      //     };
+      //   }
+      //   proto.bind = bind;
+      // })(Function.prototype);
+
+      !(function (proto) {
+        //经过一些大佬们的测试：apply的性能不如call，<= 3 个参数用call，否则考虑用apply
+        function bind(context = window, ...args) {
+          return (...amArg) => this.call(context, ...args.concat(amArg));
+        }
+        proto.bind = bind;
+      })(Function.prototype);
+
+      let obj = {
+        fn(...args) {
+          console.log(this, args);
+        },
+      };
+      setTimeout(obj.fn, 1000, 1, 2);
+      setTimeout(obj.fn.bind(obj, 1, 2), 1000);
+      document.body.onclick = obj.fn
+        .bind(obj, 1, 2)
+        .bind(obj, 1, 2)
+        .bind(obj, 1, 2);
+
+      function add(...args) {
+        console.log(args);
+        return args.reduce((x, y) => {
+          return x + y;
+        });
+      }
+      // let res = add.bind(null, 1, 2).bind(null, 3, 4).bind(null, 5, 6)(); // -> [1, 2, 3, 4, 5, 6]
+      let res = add.bind(null, ...[1, 2, 3, 4, 5, 6])();
+      console.log(res); // -> 21
+    </script>
+  </body>
+</html>

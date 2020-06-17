@@ -34,11 +34,156 @@
       //   console.log(this); // -> window
       // });
 
-      function xxx() {
-        console.log(this);
-      }
+      // function xxx() {
+      //   console.log(this); // -> window
+      // }
 
-      btn.onclick = xxx.bind(window);
+      // btn.onclick = xxx.bind(window);
+    </script>
+    <script>
+      // function xxx() {
+      //   console.log(this);
+      // }
+      // let obj = {
+      //   name: "frank",
+      //   xxx: xxx,
+      // };
+      // xxx(); // -> window
+      // obj.xxx(); // -> obj
+
+      // console.log(obj.hasOwnProperty("name")); // =>true
+      // console.log(obj.hasOwnProperty("toString")); // =>false
+      // console.log("toString" in obj); // =>true
+
+      // console.log(obj.hasOwnProperty("name")); //=>hasOwnProperty方法中的this:obj  TRUE
+      // console.log(obj.__proto__.hasOwnProperty("name")); //=>hasOwnProperty方法中的this:obj.__proto__(Object.prototype)  FALSE
+      // console.log(Object.prototype.hasOwnProperty.call(obj, "name")); //<=> obj.hasOwnProperty('name')
+    </script>
+
+    <script>
+      // THIS3：构造函数执行（new xxx），函数中的this是当前类的实例
+      // function Fn(name) {
+      //   console.log(this);
+      //   // => this.xxx = xxx 是给当前实例设置私有属性
+      //   this.name = name || "hi";
+      // }
+      // let f = new Fn("frank"); // -> this -> f实例
+      // let x = new Fn();
+    </script>
+
+    <script>
+      // let xx = {
+      //   name: "xx",
+      //   fn: () => {
+      //     console.log(this); // -> window
+      //   },
+      // };
+
+      // xx.fn();
+      // let xx = {
+      //   name: "xx",
+      //   fn: (...args) => {
+      //     console.log(args); // -> [1,2,3]
+      //     console.log(this, arguments); // 运行时错误：arguments is not defined
+      //   },
+      //   fx: function () {
+      //     console.log(this, arguments);
+      //   },
+      // };
+      // xx.fx(4, 5, 6);
+      // xx.fn(1, 2, 3);
+
+      // let obj = {
+      //   name: "xx",
+      //   fn: function () {
+      //     console.log(this); // -> xx实例
+      //     return function yy() {
+      //       console.log(this); // -> window
+      //       this.name = "obj";
+      //     };
+      //   },
+      // };
+      // let x = obj.fn();
+      // x();
+
+      // let obj = {
+      //   name: "xx",
+      //   fn: function () {
+      //     console.log(this); // -> xx实例
+      //     let _this = this;
+      //     return function yy() {
+      //       console.log(this); // -> window
+      //       console.log(_this); // -> xx实例
+      //       _this.name = "obj";
+      //     };
+      //   },
+      // };
+      // let x = obj.fn();
+      // x();
+
+      // let obj = {
+      //   name: "xx",
+      //   fn: function () {
+      //     console.log(this); // -> xx实例
+      //     return () => {
+      //       console.log(this); // -> xx实例
+      //       this.name = "obj";
+      //     };
+      //   },
+      // };
+      // let x = obj.fn();
+      // x();
+      // let obj = {
+      //   name: "xx",
+      //   fn: function () {
+      //     console.log(this);
+      //     setTimeout(function () {
+      //       console.log(this); // -> window
+      //       this.name = "obj";
+      //     }, 1000);
+      //   },
+      // };
+      // obj.fn();
+
+      // window.setTimeout(function () {
+      //   console.log(this); // -> window
+      // }, 1000);
+      // btn.addEventListener(
+      //   "click",
+      //   function () {
+      //     console.log(this); // -> btn
+      //   },
+      //   false
+      // );
+
+      // let obj = {
+      //   name: "xx",
+      //   fn: function () {
+      //     console.log(this);
+      //     setTimeout(() => {
+      //       console.log(this); // -> obj
+      //       this.name = "obj";
+      //     }, 1000);
+      //   },
+      // };
+      // obj.fn();
+    </script>
+
+    <script>
+      // function func(x, y) {
+      //   console.log(this, x, y);
+      // }
+      // func.call("call: ", 1, 2);
+      // // func.apply("apply: ", 1,2); // -> 如果你这样传，会报「Uncaught TypeError: CreateListFromArrayLike called on non-object」这样的错误
+      // func.apply("apply: ", [1, 2]);
+
+      let obj = {
+        fn(x, y) {
+          console.log(this, x, y);
+        },
+      };
+      setTimeout(obj.fn, 1000, 1, 2);
+      setTimeout(obj.fn.bind(obj, 1, 2), 1000);
     </script>
   </body>
 </html>

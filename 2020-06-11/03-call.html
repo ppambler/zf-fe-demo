@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>call重写</title>
+  </head>
+  <body>
+    <script>
+      !(function (proto) {
+        function call(context = window, ...args) {
+          //=>必须保证context是引用类型
+          context.$fn = this;
+          let result = context.$fn(...args);
+          delete context.$fn;
+          return result;
+        }
+        proto.call = call;
+      })(Function.prototype);
+      !(function (proto) {
+        function call(context = window, ...args) {
+          context === null ? (context = window) : null;
+          let type = typeof context;
+          console.log(context);
+          if (type !== "object" && type !== "function" && type !== "symbol") {
+            console.log(context);
+            //=>基本类型值
+            switch (type) {
+              case "number":
+                context = new Number(context);
+                break;
+              case "string":
+                context = new String(context);
+                break;
+              case "boolean":
+                context = new Boolean(context);
+                break;
+            }
+          }
+          context.$fn = this;
+          let result = context.$fn(...args);
+          delete context.$fn;
+          return result;
+        }
+        proto.call = call;
+      })(Function.prototype);
+      function fn(a, b) {
+        console.log(this);
+        console.log(a, b);
+      }
+      // fn.call({}, 1, 2);
+      // fn.call(1, 1, 2);
+      fn.call(undefined, 1, 2);
+
+      // apply
+
+      function apply(context = window, args) {
+        context.$fn = this;
+        // 用展开运算符，展开args这个数组就完事儿了
+        let result = context.$fn(...args);
+        delete context.$fn;
+        return result;
+      }
+    </script>
+  </body>
+</html>
