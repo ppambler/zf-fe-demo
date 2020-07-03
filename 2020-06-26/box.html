@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>box</title>
+    <!-- <link rel="stylesheet" href="./reset.min.css" /> -->
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      .box {
+        position: relative;
+        top: 20px;
+        left: 20px;
+        margin-left: 20px;
+        /* box-sizing: border-box; */
+        width: 300px;
+        height: 300px;
+        padding: 20px;
+        border: 30px solid yellow;
+        line-height: 32px;
+        overflow: auto;
+      }
+      /* .box {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -150px;
+        margin-top: -150px;
+      } */
+      /* .box {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      } */
+      /* .box {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+      } */
+
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        /* height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center; */
+        border: 10px solid yellow;
+      }
+      .container {
+        position: relative;
+        width: 500px;
+        height: 500px;
+        border: 10px solid yellowgreen;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="container">
+      <div class="box" id="box">
+        1.你日渐平庸，甘于平庸，将继续平庸。—— 《以自己喜欢的方式过一生》
+        2.我将融入剧烈争斗的大人世界，要在那边孤军奋战，必须变得比任何人都坚不可摧。——《海边的卡夫卡》
+      </div>
+    </div>
+
+    <script>
+      var box = document.getElementById("box");
+      // function boxCenter(parent, sonId) {
+      //   // JS实现居中：(一屏幕的宽度-盒子的宽度)/2 === LEFT
+      //   let winW = parent.clientWidth,
+      //     winH = parent.clientHeight,
+      //     box = document.getElementById(sonId);
+      //   box.style.position = "absolute";
+      //   box.style.left = (winW - 300) / 2 + "px";
+      //   box.style.top = (winH - 300) / 2 + "px";
+      // }
+
+      // boxCenter(document.documentElement, "box");
+
+      // window.onresize = function () {
+      //   boxCenter(document.documentElement, "box");
+      // };
+
+      // box.onclick = function (e) {
+      //   console.log(e.clientX);
+      //   console.log(e.clientY);
+      // };
+      /*
+       * offset：获取当前元素距离BODY的左/上偏移（不论其父参照物是谁）
+       *   @params
+       *      curEle:current element当前要操作的元素
+       *   @return
+       *      [object]包含上/左偏移的信息  => {top:xxx,left:xxx}
+       * by zhufengpeixun on 2019/08/14
+       */
+      function offset(curEle) {
+        var par = curEle.offsetParent,
+          l = curEle.offsetLeft,
+          t = curEle.offsetTop;
+        //存在父参照物，而且还没有找到BODY
+        while (par && par.tagName !== "BODY") {
+          //在原有偏移的基础上累加：父参照物的边框、父参照物的偏移
+          if (!/MSIE 8\.0/.test(navigator.userAgent)) {
+            //IE8中偏移值自已就算了边框了，不需要我们在加边框的值 navigator.userAgent获取当前浏览器的版本信息
+            l += par.clientLeft;
+            t += par.clientTop;
+          }
+          console.log(par);
+          l += par.offsetLeft;
+          t += par.offsetTop;
+          //继续获取上级参照物
+          par = par.offsetParent;
+        }
+        return {
+          top: t,
+          left: l,
+        };
+      }
+    </script>
+  </body>
+</html>

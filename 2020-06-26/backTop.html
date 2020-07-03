@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>回到顶部</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        height: 1000%;
+        /* CSS3中的背景颜色线性渐变 */
+        background: -webkit-linear-gradient(
+          top left,
+          lightblue,
+          lightpink,
+          lightyellow
+        );
+      }
+
+      .link {
+        display: none;
+        position: fixed;
+        right: 30px;
+        bottom: 230px;
+        box-sizing: border-box;
+        width: 100px;
+        height: 100px;
+        background: lightcoral;
+        font-size: 16px;
+        color: #000;
+        text-decoration: none;
+        text-align: center;
+        line-height: 100px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <a href="javascript:;" id="link" class="link">backTop</a>
+
+    <script>
+      let HTML = document.documentElement,
+        LINK = document.getElementById("link");
+
+      // 1.当浏览器滚动条滚动的时候，我们进行验证：卷去的高度超过两屏，我们让#LINK显示
+      function check() {
+        //winH:一屏幕高度  scrollT:卷去的高度
+        let winH = HTML.clientHeight,
+          scrollT = HTML.scrollTop;
+        LINK.style.display = scrollT >= winH * 2 ? "block" : "none";
+        console.log(scrollT);
+      }
+      window.onscroll = throttle(check);
+
+      // window.addEventListener("scroll", throttle(check));
+
+      // 2.点击回到顶部
+      LINK.onclick = function () {
+        /* 让按钮隐藏 */
+        LINK.style.display = "none";
+        //先禁止滚动事件触发（因为在回到顶部的运动过程中，如果事件一直在，会计算按钮显示隐藏的样式，无法让按钮隐藏）
+        window.onscroll = null;
+
+        /* 实现动画 */
+        let step = 1000;
+        let n = 0;
+        let timer = setInterval(() => {
+          //每一次获取最新的SCROLL-TOP值，在现有的基础上减去步长，让其走一步
+          let curT = HTML.scrollTop;
+          if (curT === 0) {
+            //边界判断：已经回到顶部后，我们清除定时器
+            clearInterval(timer);
+            //恢复滚动条滚动的监听事件
+            window.onscroll = throttle(check);
+            return;
+          }
+          curT -= step;
+          HTML.scrollTop = curT;
+          console.log(++n);
+        }, 17);
+      };
+
+      // 0.1.1/throttle.js
+      /**
+       *
+       * @param {Function} callback 回调函数
+       * @param {Number} wait       间隔时间
+       *
+       * @return {Function} 节流函数
+       */
+      function throttle(callback, wait = 3000) {
+        let timer = null;
+        let startTime;
+        return function () {
+          const ctx = this;
+          const args = arguments;
+          const now = +new Date();
+          if (startTime && now < startTime + wait) {
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+              startTime = now;
+              callback.apply(ctx, args);
+            }, wait);
+          } else {
+            startTime = now;
+            callback.apply(ctx, args);
+          }
+        };
+      }
+    </script>
+  </body>
+</html>
