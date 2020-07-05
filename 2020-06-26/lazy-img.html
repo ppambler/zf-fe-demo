@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>图片延迟加载</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      img {
+        /* 样式兼容性处理，一些浏览器对图片有默认的border */
+        border: none;
+      }
+
+      /* 隐藏图片 -> 父容器撑不起来了 */
+      img[src=""] {
+        display: none;
+      }
+
+      .imgBox {
+        box-sizing: border-box;
+        /* 让盒子杵在第二屏 */
+        margin: 800px auto;
+        /* 让盒子撑起来 -> 大小与图片尺寸对应 */
+        width: 1013px;
+        height: 1200px;
+        /* 给个灰色显示地表示在占位 -> 用于放图片 */
+        background: #ccc;
+      }
+
+      .imgBox img {
+        display: none;
+        /* 图片出现了还得给个样式 */
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="imgBox" id="box">
+      <img src="" alt="" trueImg="images/1013-1200.jpg" />
+    </div>
+    <script src="./延迟加载.js"></script>
+  </body>
+</html>
