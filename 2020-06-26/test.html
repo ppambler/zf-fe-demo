@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta charset="utf-8">
+  <title>test</title>
+  <style>
+    #box {
+      height: 200px;
+      width: 200px;
+      background-color: lightcoral;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="box"></div>
+
+  <script>
+    window.onload = function (e) {
+      console.log(e)
+    }
+    box.ontouchstart = function (ev) {
+      console.log(ev)
+      let point = ev.changedTouches[0]
+    }
+
+  </script>
+
+</body>
+
+</html>

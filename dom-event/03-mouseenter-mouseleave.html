@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>03-mouseenter-mouseleave</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #outer {
+      width: 300px;
+      height: 300px;
+      background: lightgreen;
+      border-radius: 150px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at 100px 100px, lightgreen, #000);
+    }
+
+    #inner {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at 70px 70px, lightcoral, #000);
+
+    }
+
+
+
+    #center {
+      width: 100px;
+      height: 100px;
+      background: lightgoldenrodyellow;
+      border-radius: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="outer">
+    <div id="inner">
+    </div>
+  </div>
+  <script>
+    console.log('fuck')
+    outer.onmouseenter = (e) => {
+      console.log('outer:enter')
+    }
+    outer.onmouseleave = (e) => {
+      console.log('outer:leave')
+    }
+    inner.onmouseenter = (e) => {
+      console.log('inner:enter')
+    }
+    inner.onmouseleave = (e) => {
+      console.log('inner:leave')
+    }
+
+  </script>
+</body>
+
+</html>

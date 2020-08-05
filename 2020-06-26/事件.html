@@ -1,31 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DOM事件</title>
-    <link rel="stylesheet" href="./reset.min.css" />
-    <style>
-      .test1 {
-        width: 100px;
-        height: 100px;
-        border: 10px solid yellowgreen;
-        background-color: lightgreen;
-        margin-bottom: 20px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="test1" id="box1"></div>
-    <div class="test1"></div>
-    <script>
-      let box1 = document.getElementById("box1");
-      function f1() {
-        alert("click box1 2");
-      }
-      box1.addEventListener("click", f1);
-      box1.addEventListener("click", f1);
-      box1.onclick = f1;
-    </script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DOM事件</title>
+  <link rel="stylesheet" href="./reset.min.css" />
+  <style>
+    .test1 {
+      width: 100px;
+      height: 100px;
+      border: 10px solid yellowgreen;
+      background-color: lightgreen;
+      margin-bottom: 20px;
+      margin: 1000px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="test1" id="box1"></div>
+  <div class="test1"></div>
+  <script>
+    let box1 = document.getElementById("box1");
+    function f1(e) {
+      console.log(e)
+      alert("click box1 call f1");
+    }
+    function f2() {
+      alert('click box1 call f2')
+    }
+    function f3() {
+      alert('click box1 call f3')
+    }
+    // 重复绑定同一个f1是无效的，只会执行一次
+    box1.addEventListener("click", f1);
+    // box1.addEventListener("click", f1);
+    // box1.addEventListener("click", f3);
+    // 谁先绑定click谁就会先执行 -> 代码书写顺序
+    // box1.onclick = f2;
+
+    document.onkeydown = function (e) {
+      console.log(e)
+    }
+  </script>
+</body>
+
 </html>

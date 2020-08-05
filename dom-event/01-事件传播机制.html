@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>01-事件传播机制</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #outer {
+      width: 300px;
+      height: 300px;
+      background: lightgreen;
+      border-radius: 150px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #inner {
+      width: 200px;
+      height: 200px;
+      background: lightcoral;
+      border-radius: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+    }
+
+    #center {
+      width: 100px;
+      height: 100px;
+      background: lightgoldenrodyellow;
+      border-radius: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="outer">
+    <div id="inner">
+      <div id="center"></div>
+    </div>
+  </div>
+  <script>
+    let a, b, c
+    center.onclick = function (e) {
+      a = e
+      console.log('center')
+      // 阻止信号的冒泡传播
+      e.stopPropagation()
+    }
+    document.onclick = function (e) {
+      b = e
+      console.log(e.currentTarget)
+      console.log(e.target)
+      console.log('document')
+    }
+    window.onclick = function (e) {
+      c = e
+      console.log('window')
+    }
+    setTimeout(() => {
+      console.log(a, b, c)
+      console.log(a === b)
+      console.log(a === c)
+    }, 5000)
+  </script>
+</body>
+
+</html>
