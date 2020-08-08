@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>eventBus</title>
+  <style></style>
+</head>
+
+<body>
+
+  <script src="EventBus.js"></script>
+  <script>
+    function fn1() { console.log(1); }
+    function fn2() { console.log(2); }
+    function fn3() {
+      console.log(3);
+      EB.$off('AA', fn1);
+      EB.$off('AA', fn2);
+    }
+    function fn4() { console.log(4); }
+    function fn5() { console.log(5); }
+    function fn6() { console.log(6); }
+    EB.$on('AA', fn1);
+    EB.$on('AA', fn2);
+    EB.$on('AA', fn3);
+    EB.$on('AA', fn4);
+    EB.$on('AA', fn5);
+    EB.$on('AA', fn6);
+  </script>
+
+  <script>
+		/* function fn1(n,m){console.log(1,n,m);}
+		function fn2(n,m){console.log(2,n,m);}
+		function fn3(n,m){console.log(3,n,m);}
+		EB.$on('AA',fn1);
+		EB.$on('AA',fn2);
+		EB.$on('AA',fn2);
+		EB.$on('BB',fn1);
+		EB.$on('BB',fn3);
+
+		setTimeout(()=>{
+			EB.$emit('AA',10,30);
+		},1000); */
+  </script>
+
+  <script src="jquery.min.js"></script>
+  <script>
+		/* // 创建一个事件池
+		let $plan = $.Callbacks();
+
+		// 向事件池中追加方法（没有做去重处理）
+		function fn1(n,m){console.log(1,n,m);}
+		function fn2(n,m){console.log(2,n,m);}
+		function fn3(n,m){console.log(3,n,m);}
+		$plan.add(fn1);
+		$plan.add(fn2);
+		$plan.add(fn3);
+		$plan.add(fn3);
+
+		// 通知事件池中的方法执行
+		setTimeout(()=>{
+			$plan.fire(10,20);
+		},1000); */
+  </script>
+</body>
+
+</html>
